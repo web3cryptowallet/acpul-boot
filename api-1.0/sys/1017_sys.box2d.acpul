@@ -1,0 +1,706 @@
+### 1017 sys.box2d
+
+box2d
+{
+ static 0;
+ kinematic 1;
+ dynamic 2;
+
+ bodyDef.DESCRIPTION { # info only (types, ranges...)
+  type     {static;kinematic;dynamic;};
+  position {x;y;};
+  angle    0-380;
+#  mass     kg;
+  linear.velocity ;
+  angular.velocity ;
+  linear.damping ;
+  angular.damping ;
+  allow.sleep ;
+  awake ;
+  fixed.rotation ;
+  bullet ;
+  active ;
+  gravity.scale 1.0;
+ };
+ reset
+ # u0
+  io(_0, 500300, 0,0,0,0);
+ step
+ # u0, world, dt, velocityIteractions, positionIteractions
+  io(_0, 500301, _1,_2,_3,_4);
+ 
+ world {
+ # u0, gravity(x,y)
+  io(_0, 500302, _1,_2,0,0);
+  
+  draw
+  # u0, world
+   io(_0, 500321, _1,0,0,0);
+ };
+
+ world.scale
+  # u0, world, sx,sy
+  io(_0, 500322, _1, _2,_3, 0);
+
+ # BODY [
+
+ default.dynamic.body.info {
+  type box2d.dynamic;
+  x 0;
+  y 0;
+  angle 0;
+  velocity.linear {x 0; y 0;};
+  velocity.angular 0;
+  damping.linear 0;
+  damping.angular 0;
+  allow.sleep 0;
+  awake 1;
+  fixed.rotation 0;
+  bullet 0;
+  active 1;
+  gravity.scale 1;
+ };
+
+ default.static.body.info {
+  _ default.dynamic.body.info;
+  type box2d.static;
+ };
+
+ body.def.type.position.angle
+ # u0, type, x,y, angle
+  io(_0, 500303, _1, _2,_3, _4);
+ body.def.velocity.linear.angular
+ # u0, v(x,y), angle
+  io(_0, 500304, _1,_2, _3, 0);
+ body.def.damping.linear.angular.allowSleep.awake
+ # u0, damping.v(x,y), damping.a, allowSleep, awake
+  io(_0, 500305, _1, _2, _3, _4);
+ body.def.fixed.rotation.bullet.active.gravity.scale
+ # u0, fixedRotation, bullet, active, gravityScale 
+  io(_0, 500306, _1, _2, _3, _4);
+
+ body.def0 body.def.type.position.angle(__);
+ body.def1 body.def.velocity.linear.angular(__);
+ body.def2 body.def.damping.linear.angular.allowSleep.awake(__);
+ body.def3 body.def.fixed.rotation.bullet.active.gravity.scale(__);
+
+ body.create 
+ # u0, world
+  io(_0, 500307, _1, 0,0,0);
+
+ body.create2 {
+ # u0, world, info :: default.*.body.info -> body
+  body.def0(u0, _2.type, _2.x,_2.y, _2.angle);
+  body.def1(u0, _2.velocity.linear.x,_2.velocity.linear.y, _2.velocity.angular);
+  body.def2(u0, _2.damping.linear, _2.damping.angular, _2.allow.sleep, _2.awake);
+  body.def3(u0, _2.fixed.rotation, _2.bullet, _2.active, _2.gravity.scale);
+  body.create(_0, _1);
+ };
+
+ # create ]
+
+# body.data.values4 # data[4]
+#  io(_0, 500310, _1, _2, _3, _4);
+# body.data.set 
+#  # u0, body, offset <data[4]>
+#  io(_0, 500311, _1, _2, 0,0);
+ 
+ body.data.set4 {
+  # u0, body, offset d0-d3
+  io(_0, 500310, _3, _4, _5, _6);
+  io(_0, 500311, _1, _2, 0,0);
+ };
+
+ body.data.get 
+  # u0, body, offset -> v
+  io(_0, 500312, _1, _2, 0,0);
+
+ # position, angle [
+
+ body.set.transform
+ # u0, body, x,y, angle
+  io(_0, 500370, _1, _2,_3, _4);
+
+ body.get.position
+ # u0, body -> o0,o1
+  io(_0, 500371, _1, 0,0,0);
+
+ body.get.angle
+ # u0, body -> angle
+  io(_0, 500372, _1, 0,0,0);
+ 
+ # position, angle ]
+ # velocity [
+
+ body.set.linear.velocity
+ # u0, body, vx,vy
+  io(_0, 500373, _1, _2,_3, 0);
+
+ body.get.linear.velocity
+ # u0, body -> o0,o1
+  io(_0, 500374, _1, 0,0,0);
+
+ body.set.angular.velocity
+ # u0, body, va
+  io(_0, 500375, _1, _2, 0,0);
+
+ body.get.angular.velocity
+ # u0, body -> va
+  io(_0, 500376, _1, 0,0,0);
+
+ # velocity ]
+ # impulse [
+
+ body.apply.force {
+  # u0, body, v0(x,y), point(x,y)
+  io(_0, 500336, _4,_5, 0,0);
+  io(_0, 500377, _1, 0, _2,_3);
+ };
+
+ body.apply.force.to.center
+  # u0, body, point(x,y)
+  io(_0, 500377, _1, 1, _2,_3);
+
+ body.apply.linear.impulse {
+  # u0, body, v0(x,y), point(x,y)
+  io(_0, 500336, _4,_5, 0,0);
+  io(_0, 500377, _1, 2, _2,_3);
+ };
+
+ body.apply.angular.impulse 
+  # u0, body, v
+  io(_0, 500377, _1, 3, _2, 0);
+
+ body.apply.torque
+  # u0, body, v
+  io(_0, 500377, _1, 4, _2, 0);
+
+ # impulse ]
+ # param [
+
+ body.set.gravity.scale
+  # u0, bid, v
+  io(_0, 500378, _1, 0, _2, 0);
+
+ body.set.bullet
+  # u0, bid, v
+  io(_0, 500378, _1, 1, _2, 0);
+
+ body.set.angular.damping
+  # u0, bid, v
+  io(_0, 500378, _1, 2, _2, 0);
+
+ body.set.active
+  # u0, bid, v
+  io(_0, 500378, _1, 3, _2, 0);
+
+ body.set.awake
+  # u0, bid, v
+  io(_0, 500378, _1, 4, _2, 0);
+
+ body.set.fixed.rotation
+  # u0, bid, v
+  io(_0, 500378, _1, 5, _2, 0);
+
+ body.get.world.center
+  # u0, bid -> x,y
+  io(_0, 500379, _1, 0, 0, 0);
+
+ body.get.local.center
+  # u0, bid -> x,y
+  io(_0, 500379, _1, 1, 0, 0);
+
+ body.get.local.point
+  # u0, bid, x,y -> x,y
+  io(_0, 500379, _1, 2, _2,_3);
+
+ body.get.local.vector
+  # u0, bid, x,y -> x,y
+  io(_0, 500379, _1, 3, _2,_3);
+
+ body.get.world.point
+  # u0, bid, x,y -> x,y
+  io(_0, 500379, _1, 4, _2,_3);
+
+ body.get.world.vector
+  # u0, bid, x,y -> x,y
+  io(_0, 500379, _1, 5, _2,_3);
+
+ body.get.mass
+  # u0, bid -> m
+  io(_0, 500379, _1, 6, 0,0);
+
+ # param ]
+# BODY ]
+ # COLLISION - old api!!! [
+ # body [ 
+
+ body.group.add 
+  # u0, body, group
+  io(_0, 500308, _1, _2, 0,0);
+
+ body.group.remove 
+  # u0, body, group
+  io(_0, 500309, _1, _2,0,0);
+
+ # body ]
+ # world [
+
+ collision.group.rule 
+  # u0, world, a, b, enableEvent
+  io(_0, 500320, _1, _2, _3, _4);
+
+ # world ]
+ # COLLISION - old api!!! ]
+ # SHAPE [
+
+ # type:  
+ polygon 0;
+ circle 1;
+ edge 2;
+ chain 3;
+
+ shape.create 
+  # u0, type::(polygon/circle/edge/chain)
+  io(_0, 500330, _1, 0,0,0);
+ 
+ shape.create.polygon shape.create(_0, box2d.polygon);
+ shape.create.circle shape.create(_0, box2d.circle);
+ shape.create.edge shape.create(_0, box2d.edge);
+ shape.create.chain shape.create(_0, box2d.chain);
+
+ # common [
+
+ shape.set.radius 
+  # u0, shape, radius
+  io(_0, 500331, _1, _2, 0,0);
+ 
+ # common ]
+ # circle [
+
+ shape.circle.position
+  # u0, shape, x,y
+  io(_0, 500380, _1, _2,_3, 0);
+
+ # circle ]
+ # polygon [
+
+ shape.polygon.box
+  # u0, shape, hx, hy
+  io(_0, 500332, _1, _2, _3, 0);
+
+ shape.polygon.box.a { #!
+  # u0, shape, hx, hy, center(x,y), angle
+  io(_0, 500333, _1, _4, _5, _6);
+  io(_0, 500334, _1, _2, _3, 0);
+ };
+
+ shape.polygon.vertices
+  # u0, shape, (dma,offset, count2)::vec2*4
+  io(_0, 500335, _1, _2,_3, _4);
+
+ # polygon ]
+ # edge [
+
+ shape.edge.v0.v1 {
+  # u0, shape, v0(x,y), v1(x,y)
+  io(_0, 500336, _2,_3, _4,_5);
+  io(_0, 500337, _1, 0,0,0);
+ };
+
+ # edge ]
+ # chain [
+
+ shape.chain.create.loop
+  # u0, shape, (dma,offset, count2)::vec2
+  io(_0, 500338, _1, _2,_3,_4);
+
+ shape.chain.create.chain
+  # u0, shape, (dma,offset, count2)::vec2
+  io(_0, 500339, _1, _2,_3,_4);
+
+ shape.chain.set.prev.vertex
+  # u0, shape, vertex(x,y)
+  io(_0, 500340, _1, _2,_3, 0);
+
+ shape.chain.set.next.vertex
+  # u0, shape, vertex(x,y)
+  io(_0, 500341, _1, _2,_3, 0);
+
+ # chain ]
+ # SHAPE ]
+ # FIXTURE [
+
+ fixture.def
+  # u0, friction, restitution, density, isSensor
+  io(_0, 500350, _1, _2, _3, _4);
+
+ fixture.create
+  # u0, body, shape
+  io(_0, 500351, _1, _2, 0,0);
+
+ fixture.friction
+  # u0, fixture, friction
+  io(_0, 500353, 0, _1, _2, 0);
+
+ fixture.restitution
+  # u0, fixture, restitution
+  io(_0, 500353, 1, _1, _2, 0);
+
+ fixture.sensor
+  # u0, fixture, sensor
+  io(_0, 500353, 2, _1, _2, 0);
+
+ fixture.density
+  # u0, fixture, density
+  io(_0, 500353, 3, _1, _2, 0);
+
+# collision [
+ 
+ fixture.filter.collision
+  # u0, fixture, category, mask, groupIndex
+  # categoryBits/maskBits:
+  #   collide = (filterA.maskBits & filterB.categoryBits) != 0 &&
+  #             (filterA.categoryBits & filterB.maskBits) != 0
+  # groupIndex:
+  #  if either fixture has a groupIndex of zero, use the category/mask rules as above
+  #  if both groupIndex values are non-zero but different, use the category/mask rules as above
+  #  if both groupIndex values are the same and positive, collide
+  #  if both groupIndex values are the same and negative, don't collide
+  io(_0, 500352, _1, _2, _3, _4);
+
+# events [
+
+ e.pool 507;
+ e { _;
+  contact.begin 1; # -> body0, body1
+  contact.end 2;   # -> body0, body1
+ };
+
+# events ]
+# collision ]
+ # FIXTURE ]
+# joint [
+
+# joint.def 0;
+ joint.create 1;
+
+ joint.t {
+  revolute 1;
+  prismatic 2;
+  distance 3;
+  pulley 4;
+  mouse 5;
+  gear 6;
+  wheel 7;
+  weld 8;
+  friction 9;
+  rope 10;
+ };
+
+ default.joint.info {
+#  type 0-1;
+#  data {v0 0; v1 0; v2 0; v3 0;};
+  body.a 0;
+  body.b 0;
+  collide.connected 0; # 8
+ };
+
+ joint.get.type 0;
+ joint.get.body.a 0;
+ joint.get.body.b 0;
+ joint.get.anchor.a 0;
+ joint.get.anchor.b 0;
+ joint.get.reaction.force 0;
+ joint.get.reaction.torque 0;
+ joint.get.data 0;
+ joint.set.data 0;
+
+ # joint revolute [
+ # revolute info [
+
+ default.joint.revolute.info { _ default.joint.info;
+  local.anchor.a {x 0; y 0;};
+  local.anchor.b {x 0; y 0;};
+  reference.angle 0;
+  limit {
+   enable 0;
+   lower.angle 0;
+   upper.angle 0;
+  };
+  motor {
+   enable 0;
+   speed 0;
+   max.torque 0;
+  }; # 11
+ };
+
+ # revolute info ]
+ # joint io [
+
+ joint { _;
+  p {
+   collide.connected 0;
+   local.anchor.a 1;
+   local.anchor.b 2;
+   reference.angle 3;
+   limit.angle 4;
+   motor.torque 5;
+
+   local.axis.a 6;
+   limit.translation 7;
+   motor.force 8;
+
+   length 9;
+   frequency.hz 10;
+   damping.ratio 11;
+
+   ground.anchor.a 12;
+   ground.anchor.b 13;
+
+   length.a 14;
+   length.b 15;
+   ratio 16;
+
+   target 17;
+   maxForce 18;
+
+   joint2 19;
+
+   max.torque 20;
+   max.length 21;
+
+   joint.angle 22;
+   joint.speed 23;
+  };
+
+  param
+   # u0, type, v
+   io(_0, 500355, _1, _2, 0,0);
+  param2
+   # u0, type, v0,v1
+   io(_0, 500355, _1, _2, _3, 0);
+  param3
+   # u0, type, v0,v1,v3
+   io(_0, 500355, _1, _2, _3, _4);
+
+  ps {
+   collide.connected param(u0, p.collide.connected, _0.collide.connected);
+   local.anchor.a param2(u0, p.local.anchor.a, _0.local.anchor.a.x, _0.local.anchor.a.y);
+   local.anchor.b param2(u0, p.local.anchor.b, _0.local.anchor.b.x, _0.local.anchor.b.y);
+   reference.angle param(u0, p.reference.angle, _0.reference.angle);
+   limit.angle param3(u0, p.limit.angle, _0.limit.enable, _0.limit.lower.angle, _0.limit.upper.angle);
+   motor.torque param3(u0, p.motor.torque, _0.motor.enable, _0.motor.speed, _0.motor.max.torque);
+  };
+
+  vget
+   # u0, type, joint
+   io(_0, 500356, _1, _2,0,0);
+
+  vset
+   # u0, type, joint, v
+   io(_0, 500357, _1, _2, _3, 0);
+
+  vset2
+   # u0, type, joint, v0,v1
+   io(_0, 500357, _1, _2, _3, _4);
+ };
+
+ joint.new
+  # u0, type, body(a,b)
+  io(_0, 500354, t.revolute, _2, _3, 0);
+
+ # joint io ]
+
+ joint.revolute.create {
+  # u0, info::default.joint.revolute.info, body(a,b)
+  _ ps;
+  collide.connected(_1);
+  local.anchor.a(_1);
+  local.anchor.b(_1);
+  reference.angle(_1);
+  limit.angle(_1);
+  motor.torque(_1);
+
+  new(_0, t.revolute, _2, _3);
+ };
+
+ joint.revolute.get.local.anchor.a
+  # u0, joint -> vec2
+  vget(_0, p.local.anchor.a, _1);
+
+ joint.revolute.get.local.anchor.b
+  # u0, joint -> vec2
+  vget(_0, p.local.anchor.b, _1);
+
+ joint.revolute.get.reference.angle
+  # u0, joint -> v
+  vget(_0, p.reference.angle, _1);
+
+ joint.revolute.get.joint.angle
+  # u0, joint -> v
+  vget(_0, p.joint.angle, _1);
+
+ joint.revolute.get.joint.speed
+  # u0, joint -> v
+  vget(_0, p.joint.speed, _1);
+
+ joint.revolute.set.limit 0; # enable, angle(lower,upper)
+
+ joint.revolute.get.limit
+  # u0, joint -> enable, angle(lower,upper)
+  vget(_0, p.limit.angle, _1);
+
+ joint.revolute.set.motor 0; # enable, speed, max.torque
+
+ joint.revolute.get.motor
+  # u0, joint -> enable, speed, max.torque
+  vget(_0, p.motor.torque, _1);
+
+# joint.revolute.is.motor.enable 0;
+# joint.revolute.set.motor.enable 0;
+# joint.revolute.set.motor.speed 0;
+# joint.revolute.set.motor.max.torque 0;
+# joint.revolute.get.motor.max.torque 0;
+
+ joint.revolute.get.reaction.force 0; # dt
+ joint.revolute.get.reaction.torque 0; # dt
+ joint.revolute.get.motor.torque 0; # dt
+
+# joint revolute ]
+# joint prismatic [
+ 
+ default.joint.prismatic.info { _ default.joint.info;
+  local.anchor.a {x 0; y 0;};
+  local.anchor.b {x 0; y 0;};
+  local.axis.b {x 1; y 0;};
+  reference.angle 0;
+  limit {
+   enable 0;
+   lower.translation 0;
+   upper.translation 0;
+  };
+  motor {
+   enable 0;
+   speed 0;
+   max.force 0;
+  }; # 13
+ };
+
+ joint.prismatic.create 0;
+
+# joint prismatic ]
+# joint distance [
+
+ default.joint.distance.info { _ default.joint.info;
+  local.anchor.a {x 0; y 0;};
+  local.anchor.b {x 0; y 0;};
+  length 1;
+  frequency.hz 0;
+  damping.ratio 0; #7
+ };
+
+ joint.distance.create 0;
+
+# joint distance ]
+# joint pulley [
+
+ default.joint.pulley.info { _ default.joint.info;
+  local.anchor.a {x 0-1; y 0;};
+  local.anchor.b {x 1; y 0;};
+  ground.anchor.a {x 0-1; y 1;};
+  ground.anchor.b {x 1; y 1;};
+  length.a 0;
+  length.b 0;
+  ratio 1;
+  collide.connected 1;
+ };
+
+ joint.pulley.create 0;
+
+# joint pulley ]
+# joint mouse [
+
+ default.joint.mouse.info { _ default.joint.info;
+  target {x 0; y 0;};
+  max.force 0;
+  frequency.hz 5;
+  damping.ratio 0.7;
+ };
+
+ joint.mouse.create 0;
+
+# joint mouse ]
+# joint gear [
+
+ default.joint.gear.info { _ default.joint.info;
+  joint1 0;
+  joint2 0;
+  ratio 1;
+ };
+
+ joint.gear.create 0;
+
+# joint gear ]
+# joint wheel [
+
+ default.joint.wheel.info { _ default.joint.info;
+  local.anchor.a {x 0; y 0;};
+  local.anchor.b {x 0; y 0;};
+  local.axis {x 1; y 0;};
+  motor {
+   enable 0;
+   speed 0;
+   max.torque 0;
+  };
+  frequency.hz 2;
+  damping.ratio 0.7;
+ };
+
+ joint.wheel.create 0;
+
+# joint wheel ]
+# joint weld [
+
+ default.joint.weld.info { _ default.joint.info;
+  local.anchor.a {x 0; y 0;};
+  local.anchor.b {x 0; y 0;};
+  reference.angle 0;
+  frequency.hz 0;
+  damping.ratio 0;
+ };
+
+ joint.weld.create 0;
+
+# joint weld ]
+# joint friction [
+
+ default.joint.friction.info {
+  local.anchor.a {x 0; y 0;};
+  local.anchor.b {x 0; y 0;};
+  max.force 0;
+  max.torque 0;
+ };
+
+ joint.friction.create 0;
+
+# joint friction ]
+# joint rope [
+
+ default.joint.rope.info {
+  local.anchor.a {x 0-1; y 0;};
+  local.anchor.b {x 1; y 0;};
+  max.length 0;  
+ };
+
+ joint.rope.create 0;
+
+# joint rope ]
+# joint ] 
+## rope [
+# 
+# rope.def 0;
+# rope.create 1;
+#
+## rope ]
+};

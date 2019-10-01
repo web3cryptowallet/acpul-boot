@@ -1,0 +1,160 @@
+### 1030 sys.net
+
+# net [
+
+net.e.pool 501;
+net.e { _;
+ node.found 1;
+ node.lost 2;
+  # -> id
+};
+
+net 
+{
+ _;
+ # bootstrap [
+ 
+ scan
+  # mode, type :=> e.node.found
+  # mode: 0 - off
+  #       1 - local
+  # type: 0 - server
+  #       1 - peer
+  io(u0, 19921, _0,_1,0,0);
+ 
+ scan.off          scan(0,0);
+ scan.local.server scan(1,0);
+ scan.local.peer   scan(1,1);
+
+ node.props
+  # id -> buffer
+  # b: 0 type
+  #    1 name
+  #    2 ports
+  #    3..n (ipv4|ipv6)*n
+  io(u0, 19922, _0,0,0,0);
+
+ # bootstrap ]
+ # peer [
+
+ peer
+  # mode, extra
+  # mode: 0 - off
+  #       1 - on
+  io(u0, 19923, _0,_1,0,0);
+ 
+ peer.off peer(0,0);
+ peer.on  peer(1,0);
+
+ # peer ]
+ # connection [
+
+ ip io(u0, 19917, _0,_1,_2,_3);
+ port io(u0, 19918, _0,0,0,0);
+ host 
+ {
+  ip(_0,_1,_2,_3);
+  port(_4);
+ };
+
+ # connection ]
+ # livecoding [
+
+ editor.update
+  # e
+  io(u0, 19920, _0,0,0,0);
+ reset.after.update
+  # e, id
+  io(u0, 19919, _0,_1,0,0);
+
+ # livecoding ]
+ # proto [
+ 
+ is.connected io(_0, 19950, 0,0,0,0);
+ started io(_0, 19951, 0,0,0,0);
+ is.setup.event io(_0, 19952, 0,0,0,0);
+ get.index io(_0, 19953, 0,0,0,0);
+
+ # sync [
+
+ send.mem
+  # r0, type, addr
+  # type: 
+  #  0 broadcast
+  io(_0, 19954, _1,_2, 0,0);
+ recv.mem
+  # r0, mode, addr
+  # mode:
+  #  0 default
+  io(_0, 19955, _1,_2, 0,0);
+ is.sync.event
+  # r0
+  io(_0, 19956, 0,0,0,0);
+ nodes.count
+  # r0
+  io(_0, 19957, 0,0,0,0);
+ 
+ # sync ]
+ # proto ]
+
+};
+
+# net ]
+
+
+
+# snippet [
+net.snippet
+{
+ net.host(192,168,7,225, 8077);
+ net.editor.update(1);
+ net.reset.after.update(1, 1000);
+
+ if (net.is.connected(r0))
+ {
+  net.started(r0);
+ };
+ if (net.is.setup.event(u0))
+ {
+  # bootstrap
+  k:=get.index(u0);
+ };
+};
+# snippet ]
+# snippet scan [
+net.snippet.scan {
+ _ @1010;
+ _ @sys.event;
+ if (r0) {
+  net.scan.local.server();
+ };
+ eid l0;
+ nid l1;
+ eid:=events.pop(net.e.pool,0);
+ if (eid==net.e.node.found) {
+  nid:=o0;
+  buf l2;
+  buf:=net.node.props(nid);
+  # type;name;ports;ips
+ };
+ if (eid==net.e.node.lost) {
+  # remove
+ };
+};
+# snippet scan ]
+
+
+
+# node.prop
+  # id, i
+  # i: 0 -> ip0-3
+  #    1 -> type, port
+  #    2 -> name
+#  io(u0, 19922, _0,_1,0,0);
+
+#  net.node.prop(nid,0);
+  # o0-3 ip
+#  net.node.prop(nid,1);
+  # o0-1 type, port
+#  name l2;
+#  name:=net.node.prop(nid,2);

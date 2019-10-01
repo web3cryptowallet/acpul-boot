@@ -1,0 +1,315 @@
+### 1015 sys.cpu
+cpu.REGISTERS
+{
+ globals
+ {
+  x;y;
+  w;h;
+  sx;sy;
+  a;
+  r;
+  dt;t;p;
+  r0-r7;
+  shared
+  {
+   o0-o7;
+  };
+ };
+ params
+ {
+  p0-p7;
+ };
+ locals
+ {
+  i;j;k;n;
+  ret;
+  l0-l15;
+ };
+};
+
+cpu.debug.errors.console io(_0, 500401, _1,0,0,0);
+cpu.debug.errors.enabled io(_0, 500402, _1,0,0,0);
+cpu.debug.log.to.xcode.console io(_0, 500403, _1,0,0,0);
+cpu.debug.log.to.console io(_0, 500404, _1,0,0,0);
+
+# new [
+
+cpu.debug.console.on io(_0, 500440, _1,0,0,0);
+
+# runtime [
+
+cpu.debug.get.formula.info.runtime
+ # u0, type, fid,interpreter, obj -> ?obj
+ io(_0, 500441, _1, _2, _3, _4);
+
+cpu.debug.get.formula.info.runtime.memory
+ # u0, fid,i -> mem.total, mem.used
+ runtime(_0, 0, _1,_2, 0);
+
+#cpu.debug.get.formula.info.runtime.objects
+# # u0, fid -> objects
+# runtime(_0, 0, _1, _2);
+
+# runtime ]
+
+# new ]
+
+# H9-250714 [
+cpu.frame.dt
+ #u0, dt
+ io(_0, 500405, _1,0,0,0);
+cpu.profile
+{
+ # id - 0..3 sys reserved
+ begin
+  #u0, id
+  io(_0, 500420, _1,0,0,0);
+ end
+  #u0, id
+  io(_0, 500421, _1,0,0,0);
+ get
+  #u0, id
+  io(_0, 500422, _1,0,0,0);
+ get.now
+  #u0, id
+  io(_0, 500422, _1,1,0,0);
+ end.now {
+  io(_0, 500421, _1,0,0,0); # end
+  io(_0, 500422, _1,1,0,0); # get.now
+ };
+ global.ticks
+  # u0
+  io(_0, 500424, 0,0,0,0);
+ global.ticks.frame
+  # u0
+  io(_0, 500424, 1,0,0,0);
+ reset
+  # u0
+  io(_0, 500423, 0,0,0,0);
+};
+# H9-250714 ]
+
+cpu.init
+{
+ if(_0)
+ {
+  u0:=1; u1:=0; u2:=0; u3:=0; u4:=0;
+  u5:=0; u6:=0; u7:=0; u8:=0; u9:=0;
+  u10:=0; u11:=0; u12:=0; u13:=0; u14:=0;
+  u15:=0; u16:=0; u17:=0; u18:=0; u19:=0;
+  u20:=0; u21:=0; u22:=0; u23:=0; u24:=0;
+  u25:=0; u26:=0; u27:=0; u28:=0; u29:=0;
+  u30:=0; u31:=0;
+  cpu.profile.reset(u0);
+ };
+};
+
+# core [
+
+cpu.step 
+ # u0
+ io(_0, 500429, 0,0,0,0); # for internal events
+
+cpu.e.pool 505;
+cpu.e { _;
+ formula.compiled 1; # -> fid
+};
+
+cpu.formula.info.type {
+ error.undefined.name 1;
+};
+
+cpu.get.formulas.info
+ # u0, mode -> formulas.info
+ # formulas.info: map[<formulaId>] -> items: list[] -> type:, object: (string|map...)
+ io(_0, 500430, _1,0,0,0);
+
+cpu.get.memory.info
+ # u0 -> o0-o2: total, free, used
+ io(_0, 500431, 0,0,0,0);
+
+cpu.get.disk.info
+ # u0 -> o0-o1: total, free
+ io(_0, 500432, 0,0,0,0);
+
+cpu.get.battery.info
+ # u0 -> o0-o1: level, status
+ io(_0, 500433, 0,0,0,0);
+
+cpu.get.formula.info.source
+ # u0, fid, buffer -> buffer
+ io(_0, 500434, _1, _2, 0,0);
+
+cpu.get.formula.info.text.matrix.attribute
+ # u0, fid, line,col, aid -> v
+ io(_0, 500435, _1, _2,_3, _4);
+
+cpu.source.attribute {
+ main 0;
+ statement 1;
+ name 2;
+ ident 3;
+ number 4;
+ object 5;
+ object.declaration 6;
+ expressions 7;
+ expression.simple 8;
+ expression.assign 9;
+ term 10;
+ operator 11;
+ function 12;
+ block 13;
+ file 14;
+ expression.compound 15;
+};
+
+cpu.get.current.fid
+ # u0 -> fid
+ io(_0, 500436, 0,0,0,0);
+
+cpu.device.type {
+ iphone 1;
+ ipad 2;
+ isim 3;
+};
+
+cpu.device.model {
+ iphone 1;
+ iphone3g 1;
+ iphone3gs 2;
+ iphone4 3;
+ iphone4s 4;
+ iphone5 5;
+ iphone5c 5;
+ iphone5s 6;
+ iphone6 7;
+ iphone6.plus 7;
+ iphone6s 8;
+ iphone6s.plus 8;
+ iphone.se 8;
+ iphone7 9;
+ iphone7.plus 9;
+
+ ipad1 1;
+ ipad.mini 2;
+ ipad3 3;
+ ipad4 3;
+ ipad.air 4;
+ ipad.mini2 4;
+ ipad.mini3 4;
+ ipad.mini4 5;
+ ipad.air2 5;
+ ipad.pro 6;
+
+ ipod 1;
+ ipod2 2;
+ ipod3 3;
+ ipod4 4;
+ ipod6 7;
+};
+
+cpu.get.device.type
+ # u0 -> type, major, minor
+ io(_0, 500437, 0,0,0,0);
+
+# ide [
+
+cpu.get.formulas.list
+ # u0, type, buf -> buf[0]={fid*n}
+ io(_0, 500438, _1, _2, 0,0);
+
+cpu.get.formula.name
+ # u0, type, fid, buf -> buf[0]=name
+ io(_0, 500439, _1, _2, _3, 0);
+
+# debugger [
+
+debugger.on
+ # u0, fid
+ io(_0, 500150, _1, 1, 0,0);
+
+debugger.off
+ # u0, fid
+ io(_0, 500150, _1, 0, 0,0);
+
+debugger.get.frames.count
+ # u0, fid
+ io(_0, 500151, _1, 0,0,0);
+
+debugger.select.frame
+ # u0, fid, i
+ io(_0, 500152, _1, _2, 0,0);
+
+debugger.frame.get.data
+ # u0, type, v0,v1,v2
+ io(_0, 500153, _1, _2,_3,_4);
+
+debugger.frame { _;
+ get.operations.count
+  # u0 -> count
+  debugger.frame.get.data(_0, 0, 0,0,0);
+
+ get.operation
+  # u0, mode, i, out -> mode=0,out=text
+  debugger.frame.get.data(_0, 1, _1, _2, _3);
+
+ get.operations.by.line
+  # u0, mode, line, obj-> [i0,i1...iN].
+  debugger.frame.get.data(_0, 2, _1, _2, _3);
+};
+
+debugger.frame.get.operations.by.line.timeline
+ # u0, line, ops.out
+ debugger.frame.get.operations.by.line(_0, 0, _1, _2);
+
+debugger.frame.get.operations.by.line.data
+ # u0, line, ops.out
+ debugger.frame.get.operations.by.line(_0, 1, _1, _2);
+
+debugger.frame.get.operations.by.line.data.text
+ # u0, line, ops.out
+ debugger.frame.get.operations.by.line(_0, 2, _1, _2);
+
+
+
+debugger.frame.get.cmd
+ # u0, type, v0,v1,v2
+ io(_0, 500154, _1, _3,_4,_5);
+
+debugger.set.frames.max
+ # u0, count
+ io(_0, 500155, _1, 0,0,0);
+
+debugger.set.memory.max
+ # u0, size
+ io(_0, 500156, _1, 0,0,0);
+
+debugger.set.data.mode
+ # u0, mode, obj, v0,v1
+ io(_0, 500157, _1, _2, _3,_4);
+
+debugger.cmd
+ # u0, cmd, v0,v1,v2
+ io(_0, 500158, _1, _2,_3,_4);
+
+debugger.cmd.param0
+ # u0, p0,p1,p2
+ debugger.cmd(_0, 0, _1, _2, _3);
+
+debugger.get.object.links { # ???
+ # u0, mode, obj, fid
+ # mode: 
+ #  0 - graph dot strings
+ debugger.cmd.param0(_0, 0,0,0);
+ debugger.cmd(_0, 10, _1, _2, _3);
+};
+
+debugger.get.object.locations { # ???
+ # u0, mode, obj, fid
+ debugger.cmd.param0(_0, 0,0,0);
+ debugger.cmd(_0, 10, _1, _2, _3);
+};
+
+# debugger ]
+# ide ]
+# core ]

@@ -1,0 +1,27 @@
+### 1034 sys.events
+
+# pools [
+#
+# storage 500
+# net 501
+# cpu 505
+# box2d 507
+#
+# pools ]
+
+events.pool.hwkeyboard 900;
+
+events.step 
+ io(u0, 500700, 0,0, 0,0);
+
+events.push {
+ # u0, pool,handle, type, p0,p1,p2,p3
+ io(_0, 500701, _1,_2, _3,0);
+ io(_0, 500702, _4,_5,_6,_7);
+};
+
+events.pop 
+ # u0, pool,handle -> type, o0-o3
+ io(_0, 500703, _1,_2, 0,0);
+
+

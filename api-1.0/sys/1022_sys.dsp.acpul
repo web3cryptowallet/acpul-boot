@@ -1,0 +1,267 @@
+### 1022 sys.dsp
+
+dsp {
+ reset
+  io(u0, 500000, 0,0,0,0);
+
+ # MODULE [
+
+ module.type {
+  generator 1;
+  delay 3;
+  filter 5;
+  mixer 6;
+ };
+ 
+ module.create
+  # type
+  io(u0, 500001, _0, 0,0,0);
+
+ module.props
+ {
+  note 1;
+  generator
+  {
+   types
+   {
+    sine 0;
+    square 1;
+    saw 2;
+    noise 3;
+    linear 4;
+   };
+   type 2;
+   frequency 3;
+   amplitude 4;
+   envelope
+   {
+    attack 5;
+    decay 6;
+    sustain 7;
+    release 8;
+   };
+  };
+  delay
+  {
+   repeats 9;
+   amplitude.drop 10;
+   delay.time 11;
+  };
+  filter
+  {
+   types
+   {
+    lpf 0;
+    hpf 1;
+    bpf 2;
+    notch 3;
+    peq 4;
+    lsh 5;
+    hsh 6;
+   };
+   frequency 12;
+   bandwidth 13;
+   gain 14;
+   q 15;
+   type 16;
+  };
+  mixer
+  {
+   types
+   {
+    add 0;
+    multipy 1;
+    limit.ab 2;
+   };
+   limit 17;
+   amplifier 18;
+   type 19;
+  };
+ };
+ module.prop.set
+ # module, prop, value
+  io(u0, 500002, _0, _1, _2, 0);
+
+ module.prop.get
+ # module, prop
+  io(u0, 500003, _0, _1, 0,0);
+
+ module.generator.create.harmonic
+ # module, frequency, amplitude
+  io(u0, 500004, _0, _1, _2, 0);
+
+ module.note.on
+ # module, note
+
+  io(u0, 500005, _0, _1, 0,0);
+
+ module.note.off
+ # module, note
+  io(u0, 500006, _0, _1, 0,0);
+
+ module.mixer.volume
+ # module, volume
+  io(u0, 500040, _0, _1, 0,0);
+
+ module.mixer.pan
+ # module, pan R:-1 L:1
+  io(u0, 500041, _0, _1, 0,0);
+
+ # MODULE ]
+ # COMPOSITION [
+
+ composition.create
+  io(u0, 500030, 0,0,0,0);
+
+ composition.add.track
+ # composition, track
+  io(u0, 500031, _0, _1, 0,0);
+
+ composition.time.length
+ # composition
+  io(u0, 500032, _0, 0,0,0);
+
+# composition.remove.track
+ # composition, track
+# {
+# };
+ composition.play
+ # composition, tempo, position, loop
+  io(u0, 500033, _0, _1, _2, _3);
+
+ composition.stop
+ # composition
+  io(u0, 500034, _0, 0,0,0);
+
+ # COMPOSITION ]
+ # TRACK [
+
+ track.create
+  io(u0, 500020, 0,0,0,0);
+
+ track.add.note {
+ # track, note, time, length, volume, pitch
+  io(u0, 500021, _2, _3, _4, _5);
+  io(u0, 500022, _0, _1, 0,0);
+ };
+ track.set.linker
+ # track, linker
+  io(u0, 500023, _0, _1, 0,0);
+
+ # TRACK ]
+ # LINKER [
+
+ linker.create
+  io(u0, 500010, 0,0,0,0);
+
+ linker.add.module.prop
+ # linker, module, prop
+  io(u0, 500011, _0, _1, _2, 0);
+
+ linker.note.on
+ # linker, note
+  io(u0, 500012, _0, _1, 0,0);
+
+ linker.note.off
+ # linker, note
+  io(u0, 500013, _0, _1, 0,0);
+
+ linker.set.control
+ # linker, value
+  io(u0, 500014, _0, _1, 0,0);
+
+ linker.set.pitch
+ # linker, value
+  io(u0, 500015, _0, _1, 0,0);
+
+ # LINKER ]
+
+};
+
+# new module [
+# generator [
+
+dsp.module.generator.create2 {
+ # m0dule, info :: dsp.default.module.generator.info
+ _0:=dsp.module.create(dsp.module.type.generator);
+ ps dsp.module.prop.set(__);
+ p dsp.module.props.generator;
+ ps(_0, p.type, _1.type);
+ ps(_0, p.frequency, _1.frequency);
+ ps(_0, p.amplitude, _1.amplitude);
+ ps(_0, p.envelope.attack, _1.envelope.attack);
+ ps(_0, p.envelope.decay, _1.envelope.decay);
+ ps(_0, p.envelope.sustain, _1.envelope.sustain);
+ ps(_0, p.envelope.release, _1.envelope.release);
+};
+
+dsp.default.module.generator.info {
+ p dsp.module.props.generator;
+ type p.types.sine;
+ frequency 1;
+ amplitude 0.5;
+ envelope {
+  attack 0.1;
+  decay 0.2;
+  sustain 0.1;
+  release 0.1;
+ };
+ add.harmonic module.generator.create.harmonic(__);
+ mixer.volume module.mixer.volume(__);
+ new module.generator.create2(__);
+};
+
+# generator ]
+# delay [
+
+dsp.module.delay.create {
+ # m0dule, repeats, amplitude.drop, delay
+ _0:=dsp.module.create(dsp.module.type.delay);
+ ps dsp.module.prop.set(__);
+ p dsp.module.props.delay; 
+ ps(_0, p.repeats, _1);
+ ps(_0, p.amplitude.drop, _2);
+ ps(_0, p.delay.time, _3); 
+};
+
+dsp.module.delay.create2 {
+ # m0dule, info :: dsp.default.module.delay.info
+ dsp.module.delay.create(_0, _1.repeats, _1.amplitude.drop, _1.delay.time);
+};
+
+dsp.default.module.delay.info {
+ repeats 1;
+ amplitude.drop 0.2;
+ delay.time 1;
+ new dsp.module.delay.create2(__);
+};
+
+# delay ]
+# filter [
+
+dsp.module.filter.create {
+ # m0dule, frequency, bandwidth, gain, type
+ _0:=dsp.module.create(dsp.module.type.filter);
+ ps dsp.module.prop.set(__);
+ p dsp.module.props.filter; 
+ ps(_0, p.frequency, _1);
+ ps(_0, p.bandwidth, _2);
+ ps(_0, p.gain, _3); 
+ ps(_0, p.type, _4); 
+};
+
+dsp.module.filter.create2 {
+ # m0dule, info :: dsp.default.module.filter.info
+ dsp.module.filter.create(_0, _1.frequency, _1.bandwidth, _1.gain, _1.type);
+};
+
+dsp.default.module.filter.info {
+ frequency 1000;
+ bandwidth 500;
+ gain 0.5;
+ type 1000;
+ new dsp.module.filter.create2(__);
+};
+
+# filter ]
+# new module ]

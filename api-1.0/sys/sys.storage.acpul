@@ -1,0 +1,84 @@
+### 1033 sys.storage
+
+storage.evs @1034; #events
+
+storage.e.pool 500;
+storage.e { _;
+ photo.loaded 1; # -> type, pool,uid
+ file.moved 2; # 2:old(type,pool,uid,i), 0:new(type,pool,uid,i)
+ file.deleted 3; # type,pool,uid,i
+ photo.saved 4;
+ new.file 5; # -> type, pool,uid
+};
+
+storage.t {
+ default 0;
+ image 1;
+ sound 2;
+ font 3;
+ data 4;
+};
+
+storage.photo.mode {
+ photos 0;
+ camera 1;
+};
+
+storage.image.load.from.photo 
+ # pool,id, mode -> handle
+ io(u0, 500500, _0,_1, _2, 0);
+
+storage.popup.point
+ # x,y
+ io(u0, 500501, _0,_1, 0,0);
+
+storage.get.load.file
+ # handle -> type, pool,uid,i
+ io(u0, 500502, _0,0,0,0);
+
+
+
+storage.image.save.texture {
+ # pool,uid, texture, rect(x,y,w,h)
+ io(u0, 500514, _3,_4, _5,_6);
+ io(u0, 500510, _0,_1, _2, 0);
+};
+
+storage.image.load.texture
+ # pool,id,i
+ io(u0, 500511, _0,_1,_2,0);
+
+
+
+storage.get.event
+ # handle
+ evs.events.pop(u0, e.pool, _0);
+
+storage.process.event {
+ # b0, handle, fn
+ _0:=get.event(_1);
+ # fn (event, handle ...o0,o1,o2,o3)
+ if (_0, _2(_0, _1), 0);
+};
+
+
+
+storage.get.sync.status 
+ # mode -> 0||1: o0-o2: offset,size, queue.count
+ # mode: 0-up, 1-down
+ io(u0, 500512, _0,0,0,0);
+
+
+storage.list.files
+ # dma, type, pool, id
+ # 0            - list types
+ # type,0       - list pools
+ # type,pool,0  - list ids
+ # type,pool,id - list files
+  io(u0, 500515, _0,_1,_2,_3);
+
+storage.save.object {
+ # type,pool,id, mode, obj,i
+ io(u0, 500514, _4,_5, 0, 0);
+ io(u0, 500516, _0,_1,_2, _3);
+};

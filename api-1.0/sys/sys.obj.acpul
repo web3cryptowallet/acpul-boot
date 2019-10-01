@@ -1,0 +1,454 @@
+### 1031 sys.obj
+
+# object common [
+
+obj.pool.reset obj_pool_reset(_0);
+
+obj.attach obj_attach(_0, _1);
+obj.detach obj_detach(_0, _1);
+
+obj.count obj_count(_0, _1);
+obj.delete obj_delete(_0, _1);
+obj.clear obj_clear(_0, _1);
+
+obj.dump 
+# u0, mode, obj
+ obj_dump(_0, _1, _2, 0);
+
+obj.dump.lines
+# u0, lines, obj
+ obj_dump(_0, 125, _2, _1);
+ 
+
+# object common ]
+# map [
+
+map.new
+ # u0, itemmax, itemoverhead
+ obj_new(_0, 0, _1, _2, 0,0);
+
+it.key
+ # u0, id,i, key :::: id.iterator[i] = id[key]
+ # -> -1=not.found
+ # ->  i=found
+ obj_it_select_key(_0, _1, _2, _3, 0);
+it.key.new
+ # u0, id,i, key :::: id.iterator[i] = id[key] = buffer.new
+ # ->  i=found
+ obj_it_select_key(_0, _1, _2, _3, 1);
+
+it.map.get.key
+ # u0, id,i -> id
+ obj_it_cmd(_0, 100, _1,_2, 0,0,0,0);
+
+it.map.erase
+ # u0, id,i, direction
+ obj_it_cmd(_0, 101, _1,_2, _3,0,0,0);
+
+# map ]
+# object iterator common [
+
+it.begin 
+ # u0, id,i
+ obj_it_select(_0, _1, _2, 0);
+it.end
+ # u0, id,i
+ obj_it_select(_0, _1, _2, 1);
+it.next
+ # u0, id,i
+ obj_it_select(_0, _1, _2, 2);
+it.prev
+ # u0, id,i
+ obj_it_select(_0, _1, _2, 3);
+
+it.eq
+ # u0, id,i,j 
+ # -1=begin
+ # -2=end
+ obj_it_eq(_0, _1, _2, _3);
+it.set
+ # u0, id,i,j : j
+ obj_it_set(_0, _1,_2,_3);
+
+it.dma
+ # u0, dma, id,i
+ obj_it_dma(_0, _1, _2,_3);
+
+it.dump
+# u0, id,i
+ obj_it_dump(_0, _1,_2, 0);
+
+# object iterator common ]
+# buffer [
+
+buffer.new
+ # u0, itemmax, itemoverhead
+ obj_new(_0, 4, _1, _2, 0,0);
+buffer.add
+ # u0, id, itemmax, itemoverhead
+ buffer_add(_0, _1, _2, _3);
+buffer.remove
+ # u0, id, i0,i1 - NOT IMPL, see CpuObject.h
+ buffer_remove(_0, _1, _2,_3); 
+buffer.dma 
+ # u0, dma, id,i
+ it.dma(_0, _1, _2,_3);
+
+buffer.str
+ # u0, id,i
+ obj_str(_0, _1,_2);
+
+buffer.get buffer_get(__); # u0, buffer,i, offset
+buffer.get2 buffer_get2(__);
+buffer.get4 buffer_get4(__);
+buffer.get8 buffer_get8(__);
+buffer.set buffer_set(__); # u0, buffer,i, offset, v
+buffer.set2 buffer_set2(__);
+buffer.set4 buffer_set4(__);
+buffer.set8 buffer_set8(__);
+
+buffer.size buffer_size(__); # u0, buffer,i
+
+buffer.count obj.count(__); # u0, buffer
+
+# buffer ]
+# str [
+
+str.dma
+ # u0, dma, id
+ it.dma(_0, _1, _2, 0);
+
+# str ]
+# dma [
+
+dma.size
+ # u0, dma
+ dma_size(_0, _1);
+
+dma.strip.size
+ # u0, dma, size
+ dma_strip_size(_0, _1, _2);
+
+dma.set
+ # u0, dma, offset, v
+ dma_set(_0, _1, _2, _3);
+dma.set2
+ # u0, dma, offset, v0,v1
+ dma_set2(_0, _1, _2, _3,_4);
+dma.set4
+ # u0, dma, offset, v0,v1,v2,v3
+ dma_set4(_0, _1, _2, _3,_4,_5,_6);
+
+dma.get
+ # u0, dma, offset
+ dma_get(_0, _1, _2);
+dma.get2
+ # u0, dma, offset
+ dma_get2(_0, _1, _2);
+dma.get4
+ # u0, dma, offset
+ dma_get4(_0, _1, _2);
+
+dma.off
+ # u0, dma
+ dma_off(_0, _1);
+
+dma.copy
+ # u0, dma0dst,offset0, dma1src,offset1, size
+ dma_copy(_0, _1,_2, _3,_4, _5);
+
+dma.fill
+ # u0, dma, offset, n, v
+ dma_fill(_0, _1, _2, _3, _4);
+
+# new extra - not tested! [
+# warning memcpy/memmove != dma_op for reverse same buffer
+
+dma.fill2
+ # u0, dma, offset, n, v0,v1
+ dma_fill_v4(_0, _1, _2, _3, 2,0, _4,_5,0,0);
+dma.fill3
+ # u0, dma, offset, n, v0,v1,v2
+ dma_fill_v4(_0, _1, _2, _3, 3,0, _4,_5,_6,0);
+dma.fill4
+ # u0, dma, offset, n, v0,v1,v2,v3
+ dma_fill_v4(_0, _1, _2, _3, 4,0, _4,_5,_6,_7);
+
+dma.add
+ # u0, dma, offset, n, v0
+ dma_add_v4(_0, _1, _2, _3, 1,0, _4,0,0,0);
+dma.add2
+ # u0, dma, offset, n, v0,v1
+ dma_add_v4(_0, _1, _2, _3, 2,0, _4,_5,0,0);
+dma.add3
+ # u0, dma, offset, n, v0,v1,v2
+ dma_add_v4(_0, _1, _2, _3, 3,0, _4,_5,_6,0);
+dma.add4
+ # u0, dma, offset, n, v0,v1,v2,v3
+ dma_add_v4(_0, _1, _2, _3, 4,0, _4,_5,_6,_7);
+
+dma.mul
+ # u0, dma, offset, n, v0
+ dma_mul_v4(_0, _1, _2, _3, 1,0, _4,0,0,0);
+dma.mul2
+ # u0, dma, offset, n, v0,v1
+ dma_mul_v4(_0, _1, _2, _3, 2,0, _4,_5,0,0);
+dma.mul3
+ # u0, dma, offset, n, v0,v1,v2
+ dma_mul_v4(_0, _1, _2, _3, 3,0, _4,_5,_6,0);
+dma.mul4
+ # u0, dma, offset, n, v0,v1,v2,v3
+ dma_mul_v4(_0, _1, _2, _3, 4,0, _4,_5,_6,_7);
+
+dma.minmax
+ # u0, dma, offset, n, vsize,vstrip
+ dma_minmax_v4(_0, _1, _2, _3, _4,_5);
+
+dma.add.dma
+ # u0, dma0d,offset0,vstrip0, dma1s,offset1,vstrip1, n, vsize
+ dma_op_dma(_0, 0, _1,_2,_3, _4,_5,_6, _7, _8);
+dma.sub.dma
+ # u0, dma0d,offset0,vstrip0, dma1s,offset1,vstrip1, n, vsize
+ dma_op_dma(_0, 1, _1,_2,_3, _4,_5,_6, _7, _8);
+dma.mul.dma
+ # u0, dma0d,offset0,vstrip0, dma1s,offset1,vstrip1, n, vsize
+ dma_op_dma(_0, 2, _1,_2,_3, _4,_5,_6, _7, _8);
+dma.div.dma
+ # u0, dma0d,offset0,vstrip0, dma1s,offset1,vstrip1, n, vsize
+ dma_op_dma(_0, 3, _1,_2,_3, _4,_5,_6, _7, _8);
+
+dma.copy2
+ # u0, dma0d,offset0,vstrip0, dma1s,offset1,vstrip1, n, vsize
+ dma_op_dma(_0, 4, _1,_2,_3, _4,_5,_6, _7, _8);
+
+
+# new extra - not tested! ]
+# dma ]
+# dma.ex [
+
+cpu.mode.formula 0;
+cpu.mode.shader 1;
+cpu.mode.formula.name 2;
+cpu.mode.shader.name 3;
+
+dma.from.file
+ # u0, dma, mode, file
+ dma_from_file(_0, _1, _2, _3);
+
+dma.json.to.object
+ # u0, dma
+ dma_json_to_object(_0, _1);
+
+dma.log
+ # u0, mode, dma
+ # mode: 0 mem 1 singleline 2 multiline
+ dma_log(_0, _1, _2);
+dma.dump dma.log(_0, _1, _2);
+
+dma.split
+ # u0, mode, dma, p0
+ dma_split_to_object(_0, _2, _1, _3);
+
+dma.print
+ # u0, out, format, args
+ dma_sprintf(_0, _1, _2, _3);
+
+dma.upload.strings
+ # u0, dma
+ dma_upload_strings(_0, _1);
+
+# dma.ex ]
+# tree [
+
+tree.new
+ # u0, itemmax, itemoverhead
+ obj_new(_0, 2, _1, _2, 0,0);
+
+it.tree.begin # == it.begin
+ # u0, id,i
+ obj_it_select2(_0, 0, _1,_2, 0,0);
+it.tree.end   # == it.end
+ # u0, id,i
+ obj_it_select2(_0, 1, _1,_2, 0,0);
+
+it.tree.depth.begin
+ # u0, id,i, j,depth
+ obj_it_select2(_0, 2, _1,_2, _3,_4);
+it.tree.depth.end
+ # u0, id,i, j,depth
+ obj_it_select2(_0, 3, _1,_2, _3,_4);
+
+it.tree.breadth.begin
+ # u0, id,i
+ obj_it_select2(_0, 4, _1,_2, 0,0);
+it.tree.breadth.end
+ # u0, id,i
+ obj_it_select2(_0, 5, _1,_2, 0,0);
+
+it.tree.sibling.child.begin
+ # u0, id,i, j
+ obj_it_select2(_0, 6, _1,_2, _3,1);
+it.tree.sibling.begin
+ # u0, id,i, j
+ obj_it_select2(_0, 6, _1,_2, _3,0);
+it.tree.sibling.end
+ # u0, id,i, j
+ obj_it_select2(_0, 7, _1,_2, _3,0);
+
+it.tree.leaf.begin
+ # u0, id,i, j
+ obj_it_select2(_0, 8, _1,_2, _3,0);
+it.tree.leaf.end
+ # u0, id,i, j
+ obj_it_select2(_0, 9, _1,_2, _3,0);
+
+it.tree.post.begin
+ # u0, id,i
+ obj_it_select2(_0, 10, _1,_2, 0,0);
+it.tree.post.end
+ # u0, id,i
+ obj_it_select2(_0, 11, _1,_2, 0,0);
+
+it.tree.parent
+ # u0, id,i
+ obj_it_select2(_0, 12, _1,_2, 0, 0);
+
+it.tree.erase
+ # u0, id,i
+ obj_it_cmd(_0, 0, _1,_2, 0,0,0,0);
+it.tree.erase_children
+ # u0, id,i
+ obj_it_cmd(_0, 1, _1,_2, 0,0,0,0);
+
+it.tree.append_child
+ # u0, id,i
+ obj_it_cmd(_0, 2, _1,_2, 0,0,0,0);
+it.tree.prepend_child
+ # u0, id,i
+ obj_it_cmd(_0, 3, _1,_2, 0,0,0,0);
+it.tree.insert
+ # u0, id,i
+ obj_it_cmd(_0, 4, _1,_2, 0,0,0,0);
+
+it.tree.insert.root {
+ it.begin(_0, _1,_2);
+ it.tree.insert(_0, _1,_2); # top
+};
+
+it.tree.depth
+ # u0, id,i
+ obj_it_cmd(_0, 20, _1,_2, 0,0,0,0);
+it.tree.depth.diff
+ # u0, id,i, j
+ obj_it_cmd(_0, 21, _1,_2, _3,0,0,0);
+it.tree.max_depth
+ # u0, id,i
+ obj_it_cmd(_0, 22, _1,_2, 0,0,0,0);
+
+it.tree.number_of_children
+ # u0, id,i
+ obj_it_cmd(_0, 23, _1,_2, 0,0,0,0);
+it.tree.number_of_siblings
+ # u0, id,i
+ obj_it_cmd(_0, 24, _1,_2, 0,0,0,0);
+
+#it.tree.previous_sibling
+#it.tree.next_sibling
+#it.tree.next_at_same_depth
+
+# tree ]
+# jobj [
+
+jobj.new
+ # u0
+ obj_new(u0, 7, 0, 0, 0,0);
+
+#jobj.count
+# # o
+# obj.count(u0, _0);
+#
+#jobj.clear
+# # o
+# obj.clear(u0, _0);
+
+jobj.v.s
+ # jo, key, v
+ jobj_set(u0, 0, _0, _1, _2, 0);
+jobj.v.g
+ # jo, key -> v,o0=err
+ jobj_get(u0, 0, _0, _1, 0, 0);
+
+jobj.str.s
+ # jo, key, s
+ jobj_set(u0, 1, _0, _1, _2, 0);
+jobj.buf.s
+ # jo, key, buf
+ jobj_set(u0, 1, _0, _1, _2, 1);
+#jobj.str.g
+# # o, key -> ,o0=err
+# jobj_get(u0, 1, _0, _1, 0);
+
+jobj.buf.dma
+ # jo, key, dma
+ jobj_get(u0, 1, _0, _1, _2, 0);
+jobj.str.dma
+ jobj.buf.dma(__);
+
+jobj.g
+ # jo -> o,o0=err
+ jobj_get(u0, 11, _0, 0, 0, 0);
+jobj.dma
+ # jo, dma,o0=err
+ jobj_get(u0, 12, _0, _1, 0, 0);
+jobj.value
+ # jo -> v,o0=err
+ jobj_get(u0, 14, _0, 0, 0, 0);
+
+
+jobj.arr.s
+ # jo, key, i, o
+ jobj_set(u0, 2, _0, _1, _2, _3);
+jobj.arr.jo.g
+ # jo, key, i -> jo,o0=err
+ jobj_get(u0, 2, _0, _1, _2, 0);
+
+jobj.arr.clear
+ # jo, key
+ jobj_cmd(u0, 0, _0, _1, 0,0,0,0);
+jobj.arr.erase
+ # jo, key, start,end
+ jobj_cmd(u0, 1, _0, _1, _2,_3, 0,0);
+jobj.arr.count
+ # jo, key
+ jobj_cmd(u0, 2, _0, _1, 0,0,0,0);
+
+jobj.jo.s
+ # jo, key, o
+ jobj_set(u0, 3, _0, _1, _2, 0);
+jobj.jo.g
+ # jo, key -> jo,o0=err
+ jobj_get(u0, 3, _0, _1, 0, 0);
+
+jobj.jo.clear
+ # jo, key
+ jobj_cmd(u0, 4, _0, _1, 0,0,0,0);
+jobj.jo.erase
+ # jo, key
+ jobj_cmd(u0, 4, _0, _1, 0,0,0,0);
+
+jobj.o.s # universal str/buf/o/jo
+ # jo, key, o
+ jobj_set(u0, 4, _0, _1, _2, 0);
+
+# jobj [
+# json [
+
+json.decode
+ # s -> o
+ io(u0, 500520, _0, 0,0,0);
+
+json.encode
+ # o, to
+ io(u0, 500521, _0, _1, 0,0);
+
+# json ]

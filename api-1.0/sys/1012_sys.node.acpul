@@ -1,0 +1,311 @@
+### 1012 sys.node
+node.p
+{
+ this 0;
+ parent 0-1;
+ target 0-30000;
+};
+
+node.d
+{
+ render.texture 7777777;
+ object 5555555;
+ ex 5555557;
+ query.object 0-7777777;
+ sprite.min 0;
+};
+
+#node.new.target
+#{
+# parent p.target;
+# tag 0-1;
+# data _1;
+# formula _2;
+# param _3;
+# create(_0, parent, tag, data, formula, param);
+#};
+
+#node.new.target(r0, 100, 1001, 0);
+
+node.new
+{
+ parent _1;
+ tag _2;
+ data _3;
+ formula _4;
+ p0 _5;
+ create(_0, parent, tag, data, formula, 
+  p0,_6,_7,_8, _9,_10,_11,_12);
+};
+
+node.new.target
+ new(_0, p.target, -1, _1, _2, _3,0,0,0, 0,0,0,0);
+
+node.new.this
+ new(_0, p.this, -1, _1, _2, _3,0,0,0, 0,0,0,0);
+
+node.new.this.object
+ new(_0, p.this, -1, d.object, _1, _2,0,0,0, 0,0,0,0);
+
+node.new.target.object
+ new(_0, p.target, -1, d.object, _1, _2,0,0,0, 0,0,0,0);
+
+node.new.this.ex
+ new(_0, p.this, -1, d.ex, _1, _2,0,0,0, 0,0,0,0);
+
+node.new.this.ex4
+ new(_0, p.this, -1, d.ex, _1, _2,_3,_4,_5, 0,0,0,0);
+
+node.new.this.ex8
+ new(_0, p.this, -1, d.ex, _1, _2,_3,_4,_5, _6,_7,_8,_9);
+
+node {_;
+ visible.s
+  # u0, visible
+  io(_0, 1, _1, 0,0,0);
+ visible.g
+  # u0
+  io(_0, 2, 0,0,0,0);
+ anchor.point.s
+  # u0, x,y
+  io(_0, 3, _1,_2, 0,0);
+ z.order.s
+  # u0, index
+  io(_0, 4, _1, 0,0,0);
+ query.parent
+  # u0, parent
+  io(_0, 100, _1, 0,0,0);
+ query.child
+  # u0, index
+  io(_0, 101, _1, 0,0,0);
+ query.child.tag
+  # u0, tag
+  io(_0, 102, _1, 0,0,0);
+ query.texture.g
+  # u0
+  io(_0, 200, 0,0,0,0);
+ query.texture.clear
+  # u0
+  io(_0, 210, 0,0,0,0);
+ gl.va.array # glVertexAttribArray
+  # bufferId, size, stride, mem, offset
+  io(u0, 8000+_0, _1, _2, _3, _4);
+ gl.draw.arrays
+  # mode, first, count
+  io(u0, 8010, _0, _1, _2, 0);
+ gl.blend
+  # u0, src, dst
+  io(_0, 8020, _1, _2, 0,0);
+ gl.shader.texture
+  # u0, shader, texture
+  io(_0, 8100, _1, _2, 0,0);
+ gl.query.shader.texture
+  # u0, shader, texture
+  io(_0, 8110, _1, _2, 0,0);
+
+ ex.texture.create
+  # u0, w,h -> tex
+  io(_0, 7000, _1,_2, 0,0);
+ ex.texture.release
+  # u0, tex
+  io(_0, 7001, _1, 0,0,0);
+
+ ex.texture.create.fmt
+  # u0, width, height, fmt, lazydata
+  io(_0, 7002, _1,_2, _3, _4);
+ ex.texture.fmt {
+  rgba8888 0; # 32-bit texture: RGBA8888
+  rgb888 1;   # 32-bit texture without Alpha channel. Don't use it.
+  rgb565 2;   # 16-bit texture without Alpha channel
+  a8 3;       # 8-bit textures used as masks
+  i8 4;       # 8-bit intensity texture
+  ai88 5;     # 16-bit textures used as masks
+  rgba444 6;  # 16-bit textures: RGBA4444
+  rgb5a1 7;   # 16-bit textures: RGB5A1
+  #pvrtc4 8;   # 4-bit PVRTC-compressed texture: PVRTC4
+  #pvrtc2 9;   # 2-bit PVRTC-compressed texture: PVRTC2
+ };
+
+ # texture param [
+
+ ex.texture.set.param
+  # u0, tex, p, v
+  io(_0, 7224, _1, _2, _3, 0);
+ ex.texture.aaa {filter.min 2;};
+ ex.texture.p {
+  filter.min 0;
+  filter.mag 1;
+  wrap.s 2;
+  wrap.t 3;
+ };
+ ex.texture.v {
+  filter.nearest 0;
+  filter.linear 1;
+  wrap.repeat 2;
+  wrap.clamp.to.edge 3;
+  wrap.mirrored.repeat 4;
+ };
+
+ # texture param ]
+
+ ex.shader.use
+  # u0, vertex, fragment
+  io(_0, 7100, _1,_2, 0,0);
+ ex.shader.uniform.texture
+  # u0, param, texture, textureUnit
+  io(_0, 7101, _1, _2, _3, 0);
+ ex.shader.uniform.texture.name # for internal
+  # u0, param, name, textureUnit
+  io(_0, 7101, _1, _2, _3, 1);
+# ex.shader.uniform.i1
+#  # u0, n, i
+#  io(_0, 7101, _1, _2, 0,0);
+ ex.shader.uniform.f1
+  # u0, n, f
+  io(_0, 7102, _1, _2, 0,0);
+ ex.shader.uniform.f2
+  # u0, n, f0,f1
+  io(_0, 7103, _1, _2,_3, 0);
+ ex.shader.uniform.f3
+  # u0, n, f0-f2
+  io(_0, 7104, _1, _2,_3,_4);
+ ex.shader.uniform.f4 {
+  # u0, n, f0-f3
+  io(_0, 7105, _5, 0,0,0);
+  io(_0, 7106, _1, _2,_3,_4);
+ };
+ ex.gl.fbo
+  # u0, texture
+  io(_0, 7200, _1, 0,0,0);
+ ex.gl.child.draw
+  # u0
+  io(_0, 7201, 0,0,0,0);
+
+ ex.gl.rect0 {
+  # u0, mode, x,y, w,h
+  io(_0, 7105, _1, 0,0,0);
+  io(_0, 7202, _2,_3, _4,_5);
+ };
+ ex.gl.rect
+  # u0, x,y, w,h
+  ex.gl.rect0(_0, 5, _1,_2, _3,_4);
+
+ ex.child.draw.s
+  # u0, value
+  io(_0, 7203, _1, 0,0,0);
+ ex.gl.clear
+  # u0, r,g,b,a
+  io(_0, 7204, _1,_2,_3,_4);
+
+ ex.gl.draw
+  # r0, mode, count
+  io(_0, 7205, _1, _2, 0,0);
+
+ ex.shader.attribute
+  # r0, i, m,o,esize,stride, type, normalized
+  {io(_0, 7210, _1, _2,_3, _4);
+   io(_0, 7211, _6, _7, _5, 0);};
+ ex.gl.mem.gpu2cpu
+  # r0, x,y, w,h, m,o
+  {io(_0, 7210, 0, _5,_6, 0);
+   io(_0, 7212, _1,_2, _3,_4);};
+
+ ex.shader.attribute.dma
+  # r0, i, dma,o,esize,stride,count, type,normalized
+  {io(_0, 7210, _1, _2,_3, _4);
+   io(_0, 7213, _5, _6, _7, _8);};
+
+ ex.shader.indices.dma
+  # r0, dma, count -> ibuf::object
+  io(_0, 7215, _1, _2, 0,0);
+ ex.gl.draw.elements
+  # r0, type, ibuf::object
+  io(_0, 7216, _1, _2, 0,0);
+
+ ex.gl.view.port
+  # r0, x,y,w,h
+  io(_0, 7206, _1,_2,_3,_4);
+ ex.gl.clip.rect
+  # r0, x,y,w,h
+  io(_0, 7207, _1,_2,_3,_4);
+ ex.gl.node.set.draw.transform
+  # r0, x,y, r, s
+  io(_0, 7208, _1,_2,_3,_4);
+ ex.gl.node.draw
+  # r0, nid
+  io(_0, 7209, _1,0,0,0);
+ ex.this.id
+  # r0 -> nid
+  io(_0, 7217, 0,0,0,0);
+ ex.is.this.drawing
+  # r0 -> bool
+  io(_0, 7218, 0,0,0,0);
+ ex.gl.point4tex4 {
+  # r0, mode, (x,y)*4, (tx,xy)*4
+  io(_0, 7222, _1, 0,0,0);
+  io(_0, 7221, _14,_15,_16,_17);
+  io(_0, 7220, _10,_11,_12,_13);
+  io(_0, 7219, _6,_7,_8,_9);
+  io(_0, 7223, _2,_3,_4,_5);
+ };
+
+ prop.x.s 
+  # u0, nid, v
+  io(_0, 7214, _1, 0, 1,_2);
+ prop.x.g 
+  # u0, nid
+  io(_0, 7214, _1, 0, 0,0);
+ prop.y.s io(_0, 7214, _1, 1, 1,_2);
+ prop.y.g io(_0, 7214, _1, 1, 0,0);
+ prop.s.s io(_0, 7214, _1, 2, 1,_2);
+ prop.s.g io(_0, 7214, _1, 2, 0,0);
+ prop.r.s io(_0, 7214, _1, 3, 1,_2);
+ prop.r.g io(_0, 7214, _1, 3, 0,0);
+ prop.lt.s io(_0, 7214, _1, 4, 1,_2);
+ prop.lt.g io(_0, 7214, _1, 4, 0,0);
+ prop.z.order.s io(_0, 7214, _1, 5, 1,_2);
+ prop.z.order.g io(_0, 7214, _1, 5, 0,0);
+
+ prop.w.s io(_0, 7214, _1, 6, 1,_2);
+ prop.w.g io(_0, 7214, _1, 6, 0,0);
+ prop.h.s io(_0, 7214, _1, 7, 1,_2);
+ prop.h.g io(_0, 7214, _1, 7, 0,0);
+ value.s io(_0, 7214, _1, 10+_2, 1,_3);
+ value.g io(_0, 7214, _1, 10+_2, 0,0);
+
+ z.to.front
+  # u0, nid, mode
+  io(_0, 7225, _1, 0, _2, 0);
+
+ z.to.back
+  # u0, nid, mode
+  io(_0, 7225, _1, 1, _2, 0);
+
+ change.parent
+  # u0, target.nid, nid
+  io(_0, 7226, _1, _2, 0,0);
+
+ get.child.dma
+  # u0, nid, dma -> -1 - bad dma size
+  io(_0, 7227, _1, _2, 0,0);
+
+ get.parent
+  # u0, nid
+  io(_0, 7228, _1, 0,0,0);
+
+# child.count
+#  # u0, nid
+#  io(_0, 7214, _1, 0,0,0);
+#
+# get.child.at
+#  # u0, index
+#  io(_0, 7214, _1, 0,0,0);
+
+};
+
+#node.new(r0, node.p.parent, -1, 100, 1001, 0);
+#node.new.target(r0, 100, 1001, 0);
+#node.new.this(r0, 100, 1001, 0);
+
+#watch(node.p.target);
+#watch(node.d.query.object);

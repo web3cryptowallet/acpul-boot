@@ -1,0 +1,78 @@
+### 1038 sys.llog
+
+# livelogging [
+
+livelog {
+ a 502000;
+
+ host {
+  # u0, ip0-3,port
+  io(_0, 501055, _5, 0,0,0);
+  io(_0, a+7, _1,_2,_3,_4);
+ };
+
+ enable
+  # u0, en
+  io(_0, a+8, _1, 0,0,0);
+
+ begin
+  # u0, str
+  io(_0, a+0, _1,0,0,0);
+ end
+  # u0
+  io(_0, a+1, 0,0,0,0);
+
+ print
+  # u0, fmt
+  io(_0, a+2, 0, _1, 0,0);
+ printv
+  # u0, fmt, v
+  io(_0, a+2, 0, _1, 1, _2);
+ printv2 {
+  # u0, fmt, v0,v1
+  io(_0, a+3, _3,0,0,0);
+  io(_0, a+2, 0, _1, 2, _2);
+ };
+ printv3 {
+  # u0, fmt, v0,v1,v2
+  io(_0, a+3, _3,_4,0,0);
+  io(_0, a+2, 0, _1, 3, _2);
+ };
+ printv4 {
+  # u0, fmt, v0,v1,v2,v4
+  io(_0, a+3, _3,_4,_5, 0);
+  io(_0, a+2, 0, _1, 4, _2);
+ };
+ printo {
+  # u0, fmt, mode, object||dma, i
+  io(_0, a+3, _4,0,0,0);
+  io(_0, a+4, 0, _1, _2, _3);
+ };
+
+ step
+  # u0
+  io(_0, a+5, _1,0,0,0);
+
+ erase
+  # u0, str
+  io(_0, a+6, _1,0,0,0);
+
+ b begin(u0, __);
+ e end(u0, __);
+ p print(u0, __);
+ pv printv(u0, __);
+ pv2 printv2(u0, __);
+ pv3 printv3(u0, __);
+ pv4 printv4(u0, __);
+ po printo(u0, __);
+};
+
+llog livelog;
+
+#llog.print(fmt);
+#llog.printv(fmt, v);
+#llog.printv2(fmt, v0, v1);
+#llog.printo(fmt, o||dma);
+#llog.pv2(value.is.one, v2);
+
+# livelogging ]

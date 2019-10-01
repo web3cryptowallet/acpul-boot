@@ -1,0 +1,45 @@
+### 1039 sys.sharedobj
+# default ids:
+# 0    self   {0:(55)}
+# 1000 boot   {1000:(nodeid)}
+
+sharedobj {
+ self u55;
+ _ @1010;
+ _ @sys.obj;
+ it0 0;
+ init {
+  # r0, dma
+  if (_0) {
+   self:=map.new(_0, 1024, 1000000);
+   it.key.new(_0, self,it0, 0);
+   it.dma(_0, _1, self,it0);
+   dma.set(_0, _1,0, 55); # set identity - js operator: u55={0:55}
+   dma.off(_0, _1);
+  };
+ };
+ key {
+  # r0, dma, key -> -1 || <dma>
+  if (it.key(_0, self,it0, _2)>=0,
+   it.dma(_0, _1, self,it0),
+   -2);
+ };
+ key.new {
+  # r0, dma, key -> <dma>
+  it.key.new(_0, self,it0, _2);
+  it.dma(_0, _1, self,it0);
+ };
+
+ # strings [
+ 
+ # key>1000000+sid 
+ # ? - shared object key never > 1000000
+ # by theory when '1000000' is too much for simple human brain
+ skey
+  key(_0, _1, _2+1000000);
+ skey.new 
+  key.new(_0, _1, _2+1000000);
+ 
+ # strings ]
+
+};

@@ -1,0 +1,103 @@
+### 1037 sys.bullet.physics
+
+bullet.physics
+{
+ a 501500;
+ default.soft.body.world.info {
+  air.density 1.2;
+  water.density 0;
+  water.offset 0;
+  max.displacement 0;
+  water.normal {x 0; y 0; z 0;};
+  gravity {x 0; y 0-10; z 0;};
+  broadphase {
+   aabb.min {x 0-1000; y 0-1000; z 0-1000;};
+   aabb.max {x 1000; y 1000; z 1000;};
+   max.proxies 32766;
+  };
+ };
+ create.soft.world {
+  # info :: default.soft.body.world.info -> world
+  io(u0, a+0, _0.air.density, _0.water.density, _0.water.offset, _0.max.displacement); 
+  io(u0, a+1, _0.water.normal.x, _0.water.normal.y, _0.water.normal.z, 0); 
+  io(u0, a+2, _0.gravity.x, _0.gravity.y, _0.gravity.z, 0); 
+  io(u0, a+3, _0.broadphase.aabb.min.x, _0.broadphase.aabb.min.y, _0.broadphase.aabb.min.z, 0); 
+  io(u0, a+10, _0.broadphase.aabb.max.x, _0.broadphase.aabb.max.y, _0.broadphase.aabb.max.z, _0.broadphase.max.proxies); 
+ };
+ default.dispatch.info {
+  def.dispatch {
+   discrete 1;
+   continuous 2;
+  };
+  time.step 0;
+  step.count 0;
+  dispatch.func def.dispatch.discrete;
+  time.of.impact 1;
+  use.continuous 1;
+  debug.draw 0;
+  enable.sat.convex 0;
+  enable.spu 1;
+  use.epa 1;
+  allowed.ccd.penetration 0.04;
+  use.convex.conservative.distance.util 0;
+  convex.conservative.distance.threshold 0;
+ };
+ world.set.dispatch.info {
+  # world, info :: default.dispatch.info
+  io(u0, a+0, _1.time.step, _1.step.count, _1.dispatch.func, _1.time.of.impact); 
+  io(u0, a+1, _1.use.continuous, _1.debug.draw, _1.enable.sat.convex, _1.enable.spu); 
+  io(u0, a+2, _1.use.epa, _1.allowed.ccd.penetration, 
+     _1.use.convex.conservative.distance.util, _1.convex.conservative.distance.threshold); 
+  io(u0, a+11, _0, 0,0,0);
+ };
+ default.soft.body.path.info {
+  corner {
+   c00 {x 0-5; y 0; z 0-5*3;};
+   c01 {x 0+5; y 0; z 0-5*3;};
+   c10 {x 0-5; y 0; z 0+5;};
+   c11 {x 0+5; y 0; z 0+5;};
+  };
+  res {
+   x 10;
+   y 10*3;
+  };
+  fixeds 1+2;
+  gendiags 1;
+ };
+ create.soft.body.path {
+  # world, path :: default.soft.body.path.info -> body
+  io(u0, a+0, _1.corner.c00.x, _1.corner.c00.y, _1.corner.c00.z, 0);
+  io(u0, a+1, _1.corner.c01.x, _1.corner.c01.y, _1.corner.c01.z, 0);
+  io(u0, a+2, _1.corner.c10.x, _1.corner.c10.y, _1.corner.c10.z, 0);
+  io(u0, a+3, _1.corner.c11.x, _1.corner.c11.y, _1.corner.c11.z, 0);
+  io(u0, a+4, _1.res.x, _1.res.y, _1.fixeds, _1.gendiags);
+  test 1;
+  io(u0, a+12, _0, test,0,0);
+ };
+
+ step {
+  # world, time
+  io(u0, a+20, _0, _1, 0,0);
+ };
+
+ draw.mode {
+  wireframe 1;
+  aabb 2;
+  # not tested [
+  contact.points 8;
+  no.deactivation 16;
+  enable.sat.comparasion 256;
+  disable.bullet.lcp 512;
+  enable.ccd 1024;
+  constraints 2048;
+  constraints.limits 4096;
+  fast.wireframe 8192;
+  normals 16384;
+  # not tested ]
+ };
+ draw.world {
+  # world, mode, dma(p0,p1)
+  io(u0, a+45, _0, _1, _2,_3);
+ };
+};
+

@@ -1,0 +1,30 @@
+### 1032 sys.abot
+
+abot
+{
+ a 500470;
+ ip io(u0, a+0, _0,_1,_2,_3); 
+ port io(u0, a+1, _0,0,0,0);
+
+ host 
+ {
+  ip(_0,_1,_2,_3);
+  port(_4);
+ };
+
+
+ stream.setup io(_0, a+2, _1,_2,_3,_4);
+ stream.start io(_0, a+3, 0,0,0,0);
+ stream.stop io(_0, a+4, 0,0,0,0);
+
+ stream.render.texture io(_0, a+5, _1, _2, 0,0);
+
+ sync.regions io(_0, a+6, _1, 0,0,0);
+
+ region.focus
+  # u0, uid
+  io(_0, a+7, _1, 0,0,0);
+ region.move 
+  # u0, dx,dy ds, speed
+  io(_0, a+8, _1,_2, _3, _4);
+};
