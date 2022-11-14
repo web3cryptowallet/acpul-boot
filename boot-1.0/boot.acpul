@@ -1,0 +1,68 @@
+boot
+
+### 9999999 docs
+
+описать 
+_ @1010; sys
+
+_ @1100; util
+
+_ @ul.ui; - интерфейс
+- пример текста
+
+# util
+
+util.dma.std 1101;
+util.dma.array 10125056;
+util.gl.std 1102;
+util.map.std 1104;
+util.livenotify 1105;
+util.info.std 1106;
+util.media.font.obj 1107;
+util.scroller.std 1108;
+
+util.i18n 70700;
+
+#core.vg 10125000; 
+
+ul.ui 70100;
+
+core.gl3d 72100;
+core.stars3d 200000;
+core.particles 78000;
+
+core.aline 76000;
+
+core.hud 79000;
+
+core.wallet 100000;
+
+core.test.common 900000;
+
+# text view lines
+
+ul.ui.text.view2 15850;
+
+new.text.view2 {
+ # hid, x,y,s, lines :: buffer
+ _0:=node.new.this.ex4(u0, ul.ui.text.view2, _4, 0,0,0);
+ node.prop.x.s(u0, _0, _1);
+ node.prop.y.s(u0, _0, _2);
+ node.prop.s.s(u0, _0, _3);
+};
+
+tv0 r7;
+
+new.text.view2(tv0, 0, 0, 1, BOOT);
+
+# text label
+_ @1010;
+_ @1100;
+_ @sys.node;
+_ @ul.ui
+
+tl0 r7;
+
+if (r0) {
+ new.text.label(tl0, 0-30,35,1, BOOT, 18, 0,0,0, 0,10170202, 0); 
+};

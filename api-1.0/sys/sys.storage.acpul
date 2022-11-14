@@ -19,6 +19,9 @@ storage.t {
  data 4;
 };
 
+
+# image store [
+
 storage.photo.mode {
  photos 0;
  camera 1;
@@ -48,6 +51,7 @@ storage.image.load.texture
  # pool,id,i
  io(u0, 500511, _0,_1,_2,0);
 
+# image store ]
 
 
 storage.get.event
@@ -77,8 +81,39 @@ storage.list.files
  # type,pool,id - list files
   io(u0, 500515, _0,_1,_2,_3);
 
+
+# object store [
+
 storage.save.object {
  # type,pool,id, mode, obj,i
  io(u0, 500514, _4,_5, 0, 0);
  io(u0, 500516, _0,_1,_2, _3);
 };
+
+storage.load.object { 
+ # type,pool,id,i, mode, obj,i
+ io(u0, 500514, _4, _5,_6, 0);
+ io(u0, 500517, _0,_1,_2,_3);
+};
+
+# object store ]
+# formula store [
+
+storage.save.all.formulas
+ # type,pool,id
+ storage.save.object(_0,_1,_2, 77, 0,0);
+
+storage.load.all.formulas
+ # type,pool,id,i
+ storage.load.object(_0,_1,_2,_3, 77, 0,0);
+
+storage.save.formula
+ # type,pool,id, fid
+ storage.save.object(_0,_1,_2, 55, _3,0);
+
+storage.load.formula
+ # type,pool,id,i, fid
+ storage.load.object(_0,_1,_2,_3, 55, _4,0);
+
+# formula store ]
+

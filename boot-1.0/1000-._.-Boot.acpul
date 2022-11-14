@@ -1,0 +1,460 @@
+### 1000  ._. Boot
+# test needCompile [
+a1001 @1001;
+# test needCompile ]
+
+_ @1010;
+_ @sys.node;
+_ @sys.touch;
+_ @sys.net;
+ 
+# NETWORKING [
+
+#net.host(192,168,0,100, 8077);
+net.editor.update(1);
+net.reset.after.update(1, 1000);
+
+# NETWORKING ]
+
+r0:=k==0;
+
+_ @sys.llog;
+#llog.host(u0, 192,168,0,100, 8995);
+llog.enable(u0, 1);
+
+draw(r0, 1001);
+
+# sharedobj [
+
+_ @sys.sharedobj;
+_ @sys.obj;
+
+dma0 0;
+sharedobj.init(r0, dma0);
+
+setup.shared.object {
+ # share.boot.node.id [
+ l0:=node.ex.this.id(r0);
+ sharedobj.key.new(r0, dma0,1000);
+ dma.set(r0, dma0,0, l0);
+ dma.off(r0, dma0);
+ # share.boot.node.id ]
+};
+setup.shared.object;
+
+test.shrobj {
+ sharedobj.key.new(r0, dma0,1);
+ dma.set(r0, dma0,0, 88);
+ sharedobj.key(r0, dma0,0);
+ l0:=dma.get(r0, dma0,0);
+ sharedobj.key(r0, dma0,1);
+ l1:=dma.get(r0, dma0,0);
+ sharedobj.key(r0, dma0,1000);
+ l2:=dma.get(r0, dma0,0);
+ dma.off(r0, dma0);
+ 
+ llog.begin(r0, S.boot.sharedobj);
+ llog.erase(r0);
+ llog.printv(r0, S.i0, l0);
+ llog.printv(r0, S.i1, l1);
+ llog.printv(r0, S.i1000, l2);
+ llog.end(r0);
+};
+test.shrobj;
+
+# sharedobj ]
+
+_ @1010;
+_ @sys.display;
+
+vw 768; vh 1024;
+
+l0:=display.orientation.get() - display.orientation.landscape;         
+if (l0>0) {
+ w:=vh;
+ h:=vw;
+# s:=1;
+};
+if (l0<=0) {
+ w:=vw;
+ h:=vh;
+# s:=0.65;
+};
+
+# INIT [
+#
+ide.setup
+ call(_0, -5, 0,0,0,0, 0,0,0,0);
+
+syntax.highlight.init
+ call(_0, -1, 0,0,0,0, 0,0,0,0);
+
+ide.setup(u0);
+syntax.highlight.init(u0);
+
+_ @sys.dsp;
+
+if (r0) {
+ dsp.reset();
+};
+
+music.play
+ # r0, melody, time, loop
+ io(_0, 500090, _1,_2,_3,0);
+
+music.stop
+ # r0
+ io(_0, 500091, 0,0,0,0);
+
+#music.play(r0, 1, 0, 1);
+music.stop(r0);
+
+# INIT ]
+
+# BOOT [
+
+
+touch.start();
+
+_ @sys.events;
+
+events.step();
+
+_ @sys.media;
+
+media.init(r0);
+media.step(u0, dt);
+
+_ @1100;
+_ @util.i18n;
+
+if (r0) {
+ i18n.init();
+};
+
+t+=dt;
+
+x:=200;
+y:=-400;
+s:=0.2*10;
+r:=0;
+#s:=1.0;
+
+zoom1
+{
+ x-=0.5;
+ x:=-1500;
+ y:=40;
+ s:=2.0;
+};
+
+zoom2
+{
+y:=100;
+r:=10;
+s:=0.4+0.2*sin(t);
+x:=100;
+};
+
+zoom3
+{
+ i mod(t, 30);
+ if(i<10,zoom1, if(i<20,zoom2,0));
+};
+
+zoom4
+{
+ x:=0;
+ y:=-1400;
+ s:=5;
+};
+#zoom4;
+
+zoomA
+{
+ i mod(t, 38);
+ if(i<10,zoom1, if(i<20,zoom2, if(i<30,zoom4,0)));
+};
+#zoom1;
+#zoom2;
+#zoom3;
+#zoom4;
+#zoomA;
+
+zoomX
+{
+ y:=100;
+ r:=0+10*sin(t/2);
+ s:=0.6+0.5*sin(t*0.75);
+ x:=150;
+};
+
+#zoomX;
+x:=0;y:=0;s:=1;
+#x:=300;y:=100;s:=0.4;r:=-2;
+#x:=300;y:=100;s:=0.2;r:=10;
+#music 141-37:00
+
+
+new.Edit1
+ node.new.this.object(r0, 1002, 0);
+
+if (r0) {
+ os.main.panel.new(l0, 0,925,1, 768,100);
+};
+
+#new.Edit1();
+
+#!node.new.this.object(r0, 2000, 0);
+#node.new.this.object(r0, 3000, 0);
+#node.new.this.object(r0, 9000, 0);
+#node.new.this.ex(r0, 9700, 0);
+#node.new.this.ex(r0, 9740, 0);
+#!node.new.this.ex(r0, 20000, 0);
+#!node.new.this.ex(r0, 11000, 0);
+
+DOTA.MAIN 3202;
+#node.new.this.ex(r0, DOTA.MAIN, 0);
+
+SHADER.TEST 37000;
+#node.new.this.ex(r0, SHADER.TEST, 0);
+
+COGX 6000;
+#node.new.this.ex(r0, COGX, 0);
+
+FILTERS 7000;
+#node.new.this.ex(r0, FILTERS, 0);
+
+ABOT 1500;
+#node.new.this.ex(r0, ABOT, 0);
+
+TEXTUREMAN.TEST 7200;
+#node.new.this.ex(r0, TEXTUREMAN.TEST, 0);
+
+IMGNODE 7040;
+#node.new.this.ex(r0, IMGNODE, 0);
+
+Арестович 788;
+#node.new.this.ex(r0, Арестович, 0);
+
+TESTS 5000;
+#node.new.this.ex(r0, TESTS, 0);
+
+EDITOR 8000;
+#node.new.this.ex(r0, EDITOR, 0);
+
+BOT 7350;
+#node.new.this.ex(r0, BOT, 0);
+
+GAME.CRAZY.BIRD 10008000;
+#node.new.this.ex(r0, GAME.CRAZY.BIRD, 0);
+#node.new.this.ex(r0, 10008000, 0);
+
+
+AWESOME.NOTES 10010000;
+#node.new.this.ex(r0, AWESOME.NOTES, 0);
+
+ACPU.STUDIO 10019000;
+#node.new.this.ex(r0, ACPU.STUDIO, 0);
+
+LIVECOMMENT 10018000;
+#node.new.this.ex(r0, LIVECOMMENT, 0);
+
+#VG;
+
+UNLIMITED.LIFE 70000;
+#node.new.this.ex(r0, UNLIMITED.LIFE, 0);
+
+NOOBMAN 10007000;
+#node.new.this.ex(r0, NOOBMAN, 0);
+
+NOOBSMILE 10024000;
+#node.new.this.ex(r0, NOOBSMILE, 0);
+
+HIPSTER.BANNER 10025000;
+#node.new.this.ex(r0, HIPSTER.BANNER, 0);
+
+
+
+
+
+
+VG {
+_ @core.vg;
+#node.new.this.ex(r0, core.vg.node.test0, 0);
+#node.new.this.ex(r0, core.vg.node.test1, 0);
+#node.new.this.ex(r0, core.vg.node.test2, 0);
+node.new.this.ex(r0, core.vg.node.test3, 0);
+
+SNAKE 10150000;
+#node.new.this.ex(r0, SNAKE, 0); 
+
+PAINT 10160000;
+node.new.this.ex(r0, PAINT, 0);
+};
+
+PHOTONEO 7500;
+node.new.this.ex(r0, PHOTONEO, 0);
+
+CLOCK 10170000;
+l0:=node.new.this.ex(r0, CLOCK, 0);
+node.prop.x.s(u0, l0, 550);
+
+NEBULA 11800;
+#node.new.this.ex(r0, NEBULA, 0);
+
+#neo.v2.tests 7990;
+node.new.this.ex(r0, 7990, 0);
+
+_ @core.gl3d;
+#l0:=node.new.this.ex(r0, gl3d.test.main, 0);
+#node.prop.s.s(u0, l0, 0.4);
+
+
+system.monitor {
+ new.monitor {
+  # t, x,y
+  monitor 5500;
+  l0:=node.new.this.ex(r0, monitor, _0);
+  node.prop.x.s(r0, l0, _1);
+  node.prop.y.s(r0, l0, _2);
+  node.prop.s.s(r0, l0, 0.5);
+ };
+
+ init {
+  # dx,dy
+  dx _0;
+  dy _1;
+  if (r0) {
+   new.monitor(0, 450+dx,10+dy);
+   new.monitor(1, 350+dx,10+dy);
+   new.monitor(2, 250+dx,10+dy);
+
+   monitor.sync.status 5510;
+   l0:=node.new.this.ex(r0, monitor.sync.status, _0);
+   node.prop.x.s(r0, l0, 180+dx);
+   node.prop.y.s(r0, l0, 35+dy);
+   node.prop.s.s(r0, l0, 0.5);
+  };
+ };
+};
+#system.monitor.init(0, 0);
+
+
+
+_ @sys.os;
+_ @os.main;
+
+if (r0) {
+ os.main.panel.new(l0, 0,925,1, 768,100);
+};
+
+system.monitor.init(0, 940);
+
+if (r0) {
+# os.main.ide.new(r0, 0,525,1, 600,400);
+};
+
+# keyboard [
+
+keyboard.hide.button 15822;
+node.new.this.ex4(r0, keyboard.hide.button,0,0,0,0);
+
+HEROLESSUS 10009000;
+#node.new.this.ex(r0, HEROLESSUS, 0);
+
+BOOTLOADER 8000000;
+node.new.this.ex(r0, BOOTLOADER, 0);
+
+# keyboard ]
+
+# old test [
+
+#node.new.this.ex(r0, -1000, 0);
+#node.new.this.ex(r0, 10005000, 0);
+
+#r1:=create(r0, 0, 101, -10001, 10001, 0);
+#r1:=create(r0, -1, 102, -10002, 10002, 0);
+#r1:=shader(r0, 1);
+
+
+#a_back;
+#r1:=create(r0, 0, 104, -10004, 10004000, 0);
+#node_test;
+#r1:=create(r0, 0, 105, -10005, 10005000, 0);
+
+# old test ]
+
+_ @1010;
+_ @sys.llog;
+
+llog.step(u0);
+ll0 r0;
+llog.begin(ll0, S.livelogging.main);
+llog.print(ll0, S.BOOT);
+llog.end(ll0);
+
+#asf        
+
+# touch debug should be lastest node [
+TOUCH.DEBUG 1006;
+#node.new.this.ex(r0, TOUCH.DEBUG, 0);
+# touch debug should be lastest node ]
+
+#watch(r0);
+
+_ @sys.cpu;
+
+cpu.init(r0);
+cpu.debug.errors.console(r0, 1);
+cpu.debug.errors.enabled(r0, 1);
+cpu.debug.log.to.xcode.console(r0, 1);
+cpu.debug.log.to.console(r0, 1);
+
+cpu.step(u0);
+
+#
+# TEST STACK
+#
+stack.a 60000;
+stack.size 10000;
+stack.head u15;
+stack.m u16;
+
+#watch(u2);
+#if(u2){watch(u2);};
+#if(r0, watch(2), 0);
+#stack.head l15;
+#stack.m l14;
+
+_ @sys.stack.base;
+
+#stack.start;
+
+#stack.test;
+#watch(stack.head);
+
+###
+
+_ @sys.heap;
+
+heap.start;
+
+#x:=500;
+#y:=500;
+
+# BOOT ]
+
+k:=1;
+
+
+#x:=100;
+
+# old [
+
+#spr1 1;
+#node.new.this(r0, spr1, 1001, 0);
+#create(r0, -30000, -1, 100, 1001, 0);
+
+# old ]
+
